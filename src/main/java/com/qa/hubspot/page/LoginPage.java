@@ -18,7 +18,7 @@ public class LoginPage extends BasePage {
 	    By emailId = By.id("username");
 	    By pwd = By.id("password");
 	    By loginButton = By.id("loginBtn");
-	    By SignUpLink = By.linkText("Sign up111");
+	    By SignUpLink = By.linkText("Sign up");
 	    By loginErrorText =By.xpath("//div[@class='private-alert__inner']");
 	
 	    

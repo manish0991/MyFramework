@@ -25,7 +25,7 @@ import com.aventstack.extentreports.reporter.configuration.ChartLocation;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 import com.qa.hubspot.base.BasePage;
 
-public class ExtentReportListener extends BasePage implements ITestListener {
+public class ExtentReportListener extends BasePage implements  ITestListener {
 
 	private static final String OUTPUT_FOLDER = "./build/";
 	private static final String FILE_NAME = "TestExecutionReport.html";
@@ -70,10 +70,10 @@ public class ExtentReportListener extends BasePage implements ITestListener {
 
 	public synchronized void onTestStart(ITestResult result) {
 		String methodName = result.getMethod().getMethodName();
-		String qualifiedName = result.getMethod().getQualifiedName();
-		int last = qualifiedName.lastIndexOf(".");
-		int mid = qualifiedName.substring(0, last).lastIndexOf(".");
-		String className = qualifiedName.substring(mid + 1, last);
+		//String qualifiedName = result.getMethod().getQualifiedName();
+		//int last = qualifiedName.lastIndexOf(".");
+		//int mid = qualifiedName.substring(0, last).lastIndexOf(".");
+		//String className = qualifiedName.substring(mid + 1, last);
 
 		System.out.println(methodName + " started!");
 		ExtentTest extentTest = extent.createTest(result.getMethod().getMethodName(),
@@ -84,7 +84,7 @@ public class ExtentReportListener extends BasePage implements ITestListener {
 		 * methodName = StringUtils.capitalize(StringUtils.join(StringUtils.
 		 * splitByCharacterTypeCamelCase(methodName), StringUtils.SPACE));
 		 */
-		extentTest.assignCategory(className);
+		//extentTest.assignCategory(className);
 		test.set(extentTest);
 		test.get().getModel().setStartTime(getTime(result.getStartMillis()));
 	}
@@ -95,32 +95,27 @@ public class ExtentReportListener extends BasePage implements ITestListener {
 		test.get().getModel().setEndTime(getTime(result.getEndMillis()));
 	}
 
-	
-	
 	public synchronized void onTestFailure(ITestResult result) {
 		System.out.println((result.getMethod().getMethodName() + " failed!"));
-	try {
-		test.get().fail(result.getThrowable(),
-				MediaEntityBuilder.createScreenCaptureFromPath(getScreenshot()).build());
+		try {
+			test.get().fail(result.getThrowable(),
+					MediaEntityBuilder.createScreenCaptureFromPath(getScreenshot()).build());
 		} catch (IOException e) {
 			System.err
 					.println("Exception thrown while updating test fail status " + Arrays.toString(e.getStackTrace()));
-	}
+		}
 		test.get().getModel().setEndTime(getTime(result.getEndMillis()));
 	}
 
-	
-	
-	
 	public synchronized void onTestSkipped(ITestResult result) {
 		System.out.println((result.getMethod().getMethodName() + " skipped!"));
-//		try {
-//			test.get().skip(result.getThrowable(),
-//					MediaEntityBuilder.createScreenCaptureFromPath(getScreenshot()).build());
-//		} catch (IOException e) {
-//			System.err
-//					.println("Exception thrown while updating test skip status " + Arrays.toString(e.getStackTrace()));
-//		}
+		try {
+			test.get().skip(result.getThrowable(),
+					MediaEntityBuilder.createScreenCaptureFromPath(getScreenshot()).build());
+		} catch (IOException e) {
+			System.err
+					.println("Exception thrown while updating test skip status " + Arrays.toString(e.getStackTrace()));
+		}
 		test.get().getModel().setEndTime(getTime(result.getEndMillis()));
 	}
 
